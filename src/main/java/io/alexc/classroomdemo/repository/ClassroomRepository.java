@@ -20,4 +20,5 @@ public interface ClassroomRepository extends JpaRepository<Classroom, Integer> {
 
     @Override
     void deleteById(Integer integer);
+
 }

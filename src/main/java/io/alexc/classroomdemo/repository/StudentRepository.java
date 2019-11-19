@@ -10,14 +10,14 @@ import java.util.Optional;
 public interface StudentRepository extends JpaRepository<Student, Integer> {
 
     @Override
-    <S extends Student> S save(S s);
+    <S extends Student> S save(S student);
 
     @Override
     void delete(Student student);
 
     @Override
-    void deleteById(Integer integer);
+    void deleteById(Integer id);
 
     @Override
-    Optional<Student> findById(Integer integer);
+    Optional<Student> findById(Integer id);
 }
