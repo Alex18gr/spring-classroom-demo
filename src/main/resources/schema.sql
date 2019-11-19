@@ -11,7 +11,7 @@ CREATE TABLE students (
   first_name VARCHAR(250) NOT NULL,
   last_name VARCHAR(250) NOT NULL,
   grade NUMERIC (2),
-  birth_date DATE,
+  birth_date DATE NOT NULL,
   classroom_id INT,
   FOREIGN KEY(classroom_id) REFERENCES classrooms(classroom_id)
 );
