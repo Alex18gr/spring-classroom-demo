@@ -34,16 +34,6 @@ public class Student {
     @ManyToOne
     @JoinColumn(name = "classroom_id")
     @JsonBackReference
-//    @Getter(value=AccessLevel.NONE)
-//    @Setter(value= AccessLevel.NONE)
     private Classroom classroom;
 
-    // @JsonManagedReference
-    public Classroom getClassroom() {
-        return classroom;
-    }
-
-    public void setClassroom(Classroom classroom) {
-        this.classroom = classroom;
-    }
 }

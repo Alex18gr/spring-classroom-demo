@@ -1,13 +1,18 @@
 package io.alexc.classroomdemo.controller;
 
 import io.alexc.classroomdemo.entity.Classroom;
+import io.alexc.classroomdemo.entity.Student;
 import io.alexc.classroomdemo.error.ClassroomNotFoundException;
+import io.alexc.classroomdemo.error.StudentNotFoundException;
 import io.alexc.classroomdemo.service.ClassroomService;
+import io.alexc.classroomdemo.service.StudentService;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("classrooms")
@@ -15,8 +20,11 @@ public class ClassroomController {
 
     private final ClassroomService classroomService;
 
-    public ClassroomController(ClassroomService classroomService) {
+    private final StudentService studentService;
+
+    public ClassroomController(ClassroomService classroomService, StudentService studentService) {
         this.classroomService = classroomService;
+        this.studentService = studentService;
     }
 
     @RequestMapping(value = "", method = RequestMethod.GET)
@@ -55,6 +63,57 @@ public class ClassroomController {
             @PathVariable Integer id
     ) {
         this.classroomService.deleteClassroomById(id);
+    }
+
+    @RequestMapping(value = "/{classroomId}/students", method = RequestMethod.GET)
+    public Collection<Student> getClassroomStudents(@PathVariable Integer classroomId) {
+        Classroom classroom = this.classroomService.findById(classroomId)
+                .orElseThrow(() -> new ClassroomNotFoundException(classroomId));
+        return classroom.getStudents();
+    }
+
+    @RequestMapping(value = "/{classroomId}/students", method = RequestMethod.POST)
+    public Student postClassroomStudent(
+            @PathVariable Integer classroomId,
+            @RequestBody Student student
+    ) {
+        Classroom classroom = this.classroomService.findById(classroomId)
+                .orElseThrow(() -> new ClassroomNotFoundException(classroomId));
+        student.setClassroom(classroom);
+        return this.studentService.save(student);
+    }
+    @RequestMapping(value = "/{classroomId}/students/{studentId}", method = RequestMethod.GET)
+    public Student getClassroomStudentById(
+            @PathVariable Integer classroomId,
+            @PathVariable Integer studentId
+    ) {
+        return this.studentService.findStudentByIdAndClassroomId(classroomId, studentId)
+                .orElseThrow(() -> new StudentNotFoundException(studentId, classroomId));
+    }
+    @RequestMapping(value = "/{classroomId}/students/{studentId}", method = RequestMethod.PUT)
+    public Student putClassroomStudent(
+            @PathVariable Integer classroomId,
+            @PathVariable Integer studentId,
+            @RequestBody Student student
+    ) {
+        Classroom classroom = this.classroomService.findById(classroomId)
+                .orElseThrow(() -> new ClassroomNotFoundException(classroomId));
+        student.setClassroom(classroom);
+        return this.studentService.findStudentById(studentId)
+                .map(s -> {
+                    s.setClassroom(classroom);
+                    s.setBirthDate(student.getBirthDate());
+                    s.setFirstName(student.getFirstName());
+                    s.setLastName(student.getLastName());
+                    s.setGrade(student.getGrade());
+                    return this.studentService.save(s);
+                })
+                .orElseThrow(() -> new StudentNotFoundException(studentId, classroomId));
+    }
+    @RequestMapping(value = "/{classroomId}/students/{studentId}", method = RequestMethod.DELETE)
+    public void deleteClassroomStudent(@PathVariable Integer classroomId, @PathVariable Integer studentId) {
+        this.studentService.deleteStudent(this.studentService.findStudentByIdAndClassroomId(classroomId, studentId)
+                .orElseThrow(() -> new StudentNotFoundException(studentId, classroomId)));
     }
 
 }

@@ -30,4 +30,8 @@ public class StudentService {
     public Optional<Student> findStudentById(int id) {
         return this.studentRepository.findById(id);
     }
+
+    public Optional<Student> findStudentByIdAndClassroomId(int classroomId, int id) {
+        return this.studentRepository.findByClassroom_IdAndId(classroomId, id);
+    }
 }

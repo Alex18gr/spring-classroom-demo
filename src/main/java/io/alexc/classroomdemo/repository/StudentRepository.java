@@ -20,4 +20,6 @@ public interface StudentRepository extends JpaRepository<Student, Integer> {
 
     @Override
     Optional<Student> findById(Integer id);
+
+    Optional<Student> findByClassroom_IdAndId(int classroom_id, int id);
 }
