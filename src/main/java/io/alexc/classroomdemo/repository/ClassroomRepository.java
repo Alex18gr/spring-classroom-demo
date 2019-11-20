@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ClassroomRepository extends JpaRepository<Classroom, Integer> {
@@ -21,4 +22,6 @@ public interface ClassroomRepository extends JpaRepository<Classroom, Integer> {
     @Override
     void deleteById(Integer integer);
 
+    @Override
+    Optional<Classroom> findById(Integer integer);
 }

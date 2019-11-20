@@ -5,6 +5,7 @@ import io.alexc.classroomdemo.repository.ClassroomRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ClassroomService {
@@ -29,5 +30,9 @@ public class ClassroomService {
 
     public void deleteClassroomById(int id) {
         this.classroomRepository.deleteById(id);
+    }
+
+    public Optional<Classroom> findById(Integer id) {
+        return this.classroomRepository.findById(id);
     }
 }

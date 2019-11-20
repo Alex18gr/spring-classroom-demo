@@ -1,7 +1,7 @@
 package io.alexc.classroomdemo.entity;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.*;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -10,11 +10,12 @@ import java.util.Date;
 @Table(name = "students")
 @Data
 @NoArgsConstructor
+@JsonIdentityInfo(generator=ObjectIdGenerators.IntSequenceGenerator.class, property="_id")
 public class Student {
 
     @Id
     @Column(name = "student_id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @Column(name = "first_name", nullable = false)
@@ -32,6 +33,17 @@ public class Student {
 
     @ManyToOne
     @JoinColumn(name = "classroom_id")
+    @JsonBackReference
+//    @Getter(value=AccessLevel.NONE)
+//    @Setter(value= AccessLevel.NONE)
     private Classroom classroom;
 
+    // @JsonManagedReference
+    public Classroom getClassroom() {
+        return classroom;
+    }
+
+    public void setClassroom(Classroom classroom) {
+        this.classroom = classroom;
+    }
 }
