@@ -24,6 +24,12 @@ public class StudentController {
         return this.studentService.findAll();
     }
 
+    @RequestMapping(value = "{id}", method = RequestMethod.GET)
+    public Student getStudent(@PathVariable Integer id) {
+        return this.studentService.findStudentById(id)
+                .orElseThrow(() -> new StudentNotFoundException(id));
+    }
+
     @RequestMapping(value = "{id}/classroom", method = RequestMethod.GET)
     public Classroom getStudentsClassrooms(@PathVariable Integer id) {
         Student student = this.studentService.findStudentById(id)
