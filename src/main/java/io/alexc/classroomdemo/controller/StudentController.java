@@ -1,12 +1,10 @@
 package io.alexc.classroomdemo.controller;
 
+import io.alexc.classroomdemo.entity.Classroom;
 import io.alexc.classroomdemo.entity.Student;
+import io.alexc.classroomdemo.error.StudentNotFoundException;
 import io.alexc.classroomdemo.service.StudentService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,9 +19,16 @@ public class StudentController {
         this.studentService = studentService;
     }
 
-//    @RequestMapping(value = "/", method = RequestMethod.GET)
-//    public List<Student> getStudents() {
-//        return this.studentService.find
-//    }
+    @RequestMapping(value = "", method = RequestMethod.GET)
+    public List<Student> getStudents() {
+        return this.studentService.findAll();
+    }
+
+    @RequestMapping(value = "{id}/classroom", method = RequestMethod.GET)
+    public Classroom getStudentsClassrooms(@PathVariable Integer id) {
+        Student student = this.studentService.findStudentById(id)
+                .orElseThrow(() -> new StudentNotFoundException(id));
+        return student.getClassroom();
+    }
 
 }

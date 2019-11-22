@@ -4,6 +4,7 @@ import io.alexc.classroomdemo.entity.Student;
 import io.alexc.classroomdemo.repository.StudentRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -33,5 +34,9 @@ public class StudentService {
 
     public Optional<Student> findStudentByIdAndClassroomId(int classroomId, int id) {
         return this.studentRepository.findByClassroom_IdAndId(classroomId, id);
+    }
+
+    public List<Student> findAll() {
+        return this.studentRepository.findAll();
     }
 }

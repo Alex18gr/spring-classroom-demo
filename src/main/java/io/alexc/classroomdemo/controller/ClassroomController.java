@@ -6,13 +6,10 @@ import io.alexc.classroomdemo.error.ClassroomNotFoundException;
 import io.alexc.classroomdemo.error.StudentNotFoundException;
 import io.alexc.classroomdemo.service.ClassroomService;
 import io.alexc.classroomdemo.service.StudentService;
-import javassist.NotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("classrooms")
