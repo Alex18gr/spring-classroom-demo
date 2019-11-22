@@ -9,6 +9,9 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.util.Collection;
 
+/*
+ The entity class the represents the Classroom entity using hibernate annotations
+ */
 @Entity
 @Table(name = "classrooms")
 @Data

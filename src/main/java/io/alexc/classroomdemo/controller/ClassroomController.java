@@ -13,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("classrooms")
+// For fixing the CORS issues due to different domain with the front-end
 @CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
 public class ClassroomController {
 

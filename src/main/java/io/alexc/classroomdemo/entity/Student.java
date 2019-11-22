@@ -6,6 +6,9 @@ import lombok.*;
 import javax.persistence.*;
 import java.util.Date;
 
+/*
+ The entity class the represents the Student entity using hibernate annotations
+ */
 @Entity
 @Table(name = "students")
 @Data
