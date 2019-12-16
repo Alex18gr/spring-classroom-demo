@@ -4,6 +4,7 @@ import io.alexc.classroomdemo.entity.Classroom;
 import io.alexc.classroomdemo.entity.Student;
 import io.alexc.classroomdemo.error.StudentNotFoundException;
 import io.alexc.classroomdemo.service.StudentService;
+import io.alexc.classroomdemo.service.StudentServiceImpl;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

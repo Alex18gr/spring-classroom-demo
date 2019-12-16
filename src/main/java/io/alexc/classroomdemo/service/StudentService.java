@@ -1,42 +1,22 @@
 package io.alexc.classroomdemo.service;
 
 import io.alexc.classroomdemo.entity.Student;
-import io.alexc.classroomdemo.repository.StudentRepository;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
-@Service
-public class StudentService {
+public interface StudentService {
 
-    private final StudentRepository studentRepository;
+    public Student save(Student student);
 
-    public StudentService(StudentRepository studentRepository) {
-        this.studentRepository = studentRepository;
-    }
+    public void deleteStudent(Student student);
 
-    public Student save(Student student) {
-        return this.studentRepository.save(student);
-    }
+    public void deleteStudentById(int id);
 
-    public void deleteStudent(Student student) {
-        this.studentRepository.delete(student);
-    }
+    public Optional<Student> findStudentById(int id);
 
-    public void deleteStudentById(int id) {
-        this.studentRepository.deleteById(id);
-    }
+    public Optional<Student> findStudentByIdAndClassroomId(int classroomId, int id);
 
-    public Optional<Student> findStudentById(int id) {
-        return this.studentRepository.findById(id);
-    }
+    public List<Student> findAll();
 
-    public Optional<Student> findStudentByIdAndClassroomId(int classroomId, int id) {
-        return this.studentRepository.findByClassroom_IdAndId(classroomId, id);
-    }
-
-    public List<Student> findAll() {
-        return this.studentRepository.findAll();
-    }
 }
