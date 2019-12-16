@@ -25,12 +25,6 @@ public class ClassroomRepositoryIntegrationTest {
     private ClassroomRepository classroomRepository;
 
     @Test
-    @DisplayName("Hello world test")
-    void whenCallingSayHello_thenReturnHello() {
-        assertEquals("Hello", "Hello");
-    }
-
-    @Test
     @DisplayName("When findById return the classroom with id")
     public void whenFindById_thenReturnClassroom() {
         Classroom c = new Classroom();
