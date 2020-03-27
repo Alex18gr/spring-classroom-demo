@@ -5,23 +5,27 @@ import io.alexc.classroomdemo.entity.Student;
 import io.alexc.classroomdemo.error.StudentNotFoundException;
 import io.alexc.classroomdemo.service.StudentService;
 import io.alexc.classroomdemo.service.StudentServiceImpl;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("students")
-@CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
-public class StudentController {
+@CrossOrigin(origins = {"http://localhost:4200", "http://localhost:4201"}, maxAge = 3600)
+public class StudentEntityController {
 
     private final StudentService studentService;
+    private final SimpMessagingTemplate messagingTemplate;
 
-    public StudentController(StudentService studentService) {
+    public StudentEntityController(StudentService studentService, SimpMessagingTemplate simpMessagingTemplate) {
         this.studentService = studentService;
+        this.messagingTemplate = simpMessagingTemplate;
     }
 
     @RequestMapping(value = "", method = RequestMethod.GET)
     public List<Student> getStudents() {
+        this.messagingTemplate.convertAndSend("/chat", "Students Sent to someone...");
         return this.studentService.findAll();
     }
 

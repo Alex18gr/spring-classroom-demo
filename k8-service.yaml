@@ -1,0 +1,11 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: classroom-spring-demo
+spec:
+  selector:
+    app: classroom-spring-demo
+  ports:
+    - protocol: TCP
+      port: 8080
+  type: NodePort

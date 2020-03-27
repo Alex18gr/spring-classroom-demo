@@ -19,7 +19,7 @@ public class Student {
     @Id
     @Column(name = "student_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     @Column(name = "first_name", nullable = false)
     private String firstName;
@@ -28,7 +28,7 @@ public class Student {
     private String lastName;
 
     @Column(name = "grade")
-    private float grade;
+    private Double grade;
 
     @Column(name = "birth_date", nullable = false)
     @Temporal(TemporalType.DATE)

@@ -24,7 +24,7 @@ public class Classroom {
     @Id
     @Column(name = "classroom_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     @Column(name = "classroom_name")
     private String name;

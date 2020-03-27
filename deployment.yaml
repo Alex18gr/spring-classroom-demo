@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: classroom-spring-demo
+spec:
+  selector:
+    matchLabels:
+      app: classroom-spring-demo
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: classroom-spring-demo
+    spec:
+      containers:
+        - name: classroom-spring-demo
+          image: alexcio/classroom-spring-demo:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8080

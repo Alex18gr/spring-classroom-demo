@@ -18,7 +18,7 @@ public class StudentRepositoryIntegrationTest {
 
     private final String STUDENT_FIRST_NAME = "A student name";
     private final String STUDENT_LAST_NAME = "A student last name";
-    private final Float STUDENT_GRADE = 15.5f;
+    private final Double STUDENT_GRADE = 15.5;
 
     @Autowired
     private TestEntityManager entityManager;
