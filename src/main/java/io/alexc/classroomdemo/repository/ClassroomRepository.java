@@ -24,4 +24,6 @@ public interface ClassroomRepository extends JpaRepository<Classroom, Integer> {
 
     @Override
     Optional<Classroom> findById(Integer integer);
+
+    List<Classroom> findAllByIdStartingWith(Integer id);
 }

@@ -18,7 +18,7 @@ import java.util.List;
 @RequestMapping("classrooms")
 // For fixing the CORS issues due to different domain with the front-end
 @CrossOrigin(origins = {"http://localhost:4200", "http://localhost:4201"}, maxAge = 3600)
-public class ClassroomEntityController {
+public class ClassroomEntityController implements ClassroomController {
 
     private final ClassroomService classroomService;
 

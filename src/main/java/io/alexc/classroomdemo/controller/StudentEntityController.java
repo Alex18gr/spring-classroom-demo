@@ -13,7 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping("students")
 @CrossOrigin(origins = {"http://localhost:4200", "http://localhost:4201"}, maxAge = 3600)
-public class StudentEntityController {
+public class StudentEntityController implements StudentController {
 
     private final StudentService studentService;
     private final SimpMessagingTemplate messagingTemplate;
