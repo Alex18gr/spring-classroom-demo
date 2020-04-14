@@ -30,7 +30,7 @@ public class ClassroomEntityController implements ClassroomController {
     }
 
     @RequestMapping(value = "", method = RequestMethod.GET)
-    public List<Classroom> getClassrooms(Pageable pageable) {
+    public List<Classroom> getClassrooms() {
         return classroomService.findAllClassrooms();
     }
 

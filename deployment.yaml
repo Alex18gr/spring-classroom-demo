@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: classroom-spring-demo
-          image: alexcio/classroom-spring-demo:latest
+          image: alexc/classroomdemo:latest # alexc/classroomdemo:latest
           imagePullPolicy: Never
           ports:
             - containerPort: 8080

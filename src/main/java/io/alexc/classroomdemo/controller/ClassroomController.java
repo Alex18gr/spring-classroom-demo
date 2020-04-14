@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface ClassroomController {
 
-    public List<Classroom> getClassrooms(Pageable pageable);
+    public List<Classroom> getClassrooms();
 
     public Classroom postClassroom(@RequestBody Classroom classroom);
 
