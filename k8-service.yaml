@@ -1,11 +1,13 @@
 kind: Service
 apiVersion: v1
 metadata:
-  name: classroom-spring-demo
+  name: service-classroom-spring-demo
 spec:
   selector:
     app: classroom-spring-demo
+    tier: backend
   ports:
     - protocol: TCP
       port: 8080
+      targetPort: http
   type: NodePort
