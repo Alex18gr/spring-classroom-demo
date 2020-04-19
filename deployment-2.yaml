@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: classroom-spring-demo
+  labels:
+    tier: backend
+    app: classroom-demo
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      tier: backend
+      app: classroom-demo
+  template:
+    metadata:
+      labels:
+        tier: backend
+        app: classroom-demo
+    spec:
+      containers:
+        - name: classroom-spring-demo
+          image: alexc/classroomdemo:latest # alexc/classroomdemo:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8080
