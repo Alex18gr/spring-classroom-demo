@@ -6,7 +6,7 @@ metadata:
     tier: backend
     app: classroom-demo
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       tier: backend
@@ -21,5 +21,8 @@ spec:
         - name: classroom-spring-demo
           image: alexc/classroomdemo:latest # alexc/classroomdemo:latest
           imagePullPolicy: Never
+          env:
+            - name: MYSQL_URL
+              value: mysql
           ports:
             - containerPort: 8080
