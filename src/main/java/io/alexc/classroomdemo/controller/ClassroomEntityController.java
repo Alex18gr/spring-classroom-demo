@@ -4,13 +4,21 @@ import io.alexc.classroomdemo.entity.Classroom;
 import io.alexc.classroomdemo.entity.Student;
 import io.alexc.classroomdemo.error.ClassroomNotFoundException;
 import io.alexc.classroomdemo.error.StudentNotFoundException;
+import io.alexc.classroomdemo.jasperreports.SimpleReportExporter;
+import io.alexc.classroomdemo.jasperreports.SimpleReportFiller;
 import io.alexc.classroomdemo.service.ClassroomService;
 import io.alexc.classroomdemo.service.ClassroomServiceImpl;
 import io.alexc.classroomdemo.service.StudentService;
 import io.alexc.classroomdemo.service.StudentServiceImpl;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.fill.ReportFiller;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.awt.print.Pageable;
+import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 
@@ -24,9 +32,15 @@ public class ClassroomEntityController implements ClassroomController {
 
     private final StudentService studentService;
 
-    public ClassroomEntityController(ClassroomService classroomService, StudentService studentService) {
+    private final SimpleReportFiller reportFiller;
+
+    private final SimpleReportExporter reportExporter;
+
+    public ClassroomEntityController(ClassroomService classroomService, StudentService studentService, SimpleReportFiller reportFiller, SimpleReportExporter reportExporter) {
         this.classroomService = classroomService;
         this.studentService = studentService;
+        this.reportFiller = reportFiller;
+        this.reportExporter = reportExporter;
     }
 
     @RequestMapping(value = "", method = RequestMethod.GET)
@@ -116,6 +130,31 @@ public class ClassroomEntityController implements ClassroomController {
     public void deleteClassroomStudent(@PathVariable Integer classroomId, @PathVariable Integer studentId) {
         this.studentService.deleteStudent(this.studentService.findStudentByIdAndClassroomId(classroomId, studentId)
                 .orElseThrow(() -> new StudentNotFoundException(studentId, classroomId)));
+    }
+
+    @RequestMapping(value = "/{classroomId}/students/report", method = RequestMethod.GET)
+    public void getClassroomStudentsReport(HttpServletResponse response, @PathVariable Integer classroomId) {
+
+        Classroom classroom = this.classroomService.findById(classroomId)
+                .orElseThrow(() -> new ClassroomNotFoundException(classroomId));
+
+        JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(classroom.getStudents());
+
+        reportFiller.setReportFileName("studentsReport");
+
+        reportFiller.setDataSource(dataSource);
+
+        reportFiller.prepareReport();
+
+        reportExporter.setJasperPrint(reportFiller.getJasperPrint());
+
+        try {
+            response.setContentType("application/pdf");
+            reportExporter.exportToPdf("temp1", "Alexc", response.getOutputStream());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
 }
