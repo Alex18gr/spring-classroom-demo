@@ -3,10 +3,8 @@ package io.alexc.classroomdemo.jasperreports;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.export.JRPdfExporter;
-import net.sf.jasperreports.export.SimpleExporterInput;
-import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
-import net.sf.jasperreports.export.SimplePdfExporterConfiguration;
-import net.sf.jasperreports.export.SimplePdfReportConfiguration;
+import net.sf.jasperreports.engine.export.ooxml.JRXlsxExporter;
+import net.sf.jasperreports.export.*;
 import org.springframework.stereotype.Component;
 
 import java.io.OutputStream;
@@ -51,6 +49,27 @@ public class SimpleReportExporter {
 
         exporter.setConfiguration(reportConfiguration);
         exporter.setConfiguration(exportConfig);
+
+        try {
+            exporter.exportReport();
+        } catch (JRException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void exportToXlsx(String fileName, String sheetName, OutputStream outputStream) {
+
+        JRXlsxExporter exporter = new JRXlsxExporter();
+
+        exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
+        exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(outputStream));
+
+        SimpleXlsxReportConfiguration reportConfiguration = new SimpleXlsxReportConfiguration();
+        reportConfiguration.setSheetNames(new String[] { sheetName });
+        reportConfiguration.setCollapseRowSpan(false);
+
+        exporter.setConfiguration(reportConfiguration);
 
         try {
             exporter.exportReport();

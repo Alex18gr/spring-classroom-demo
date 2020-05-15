@@ -133,27 +133,53 @@ public class ClassroomEntityController implements ClassroomController {
     }
 
     @RequestMapping(value = "/{classroomId}/students/report", method = RequestMethod.GET)
-    public void getClassroomStudentsReport(HttpServletResponse response, @PathVariable Integer classroomId) {
+    public void getClassroomStudentsReport(
+            HttpServletResponse response,
+            @PathVariable Integer classroomId,
+            @RequestParam(required = false) String exportType
+    ) {
 
         Classroom classroom = this.classroomService.findById(classroomId)
                 .orElseThrow(() -> new ClassroomNotFoundException(classroomId));
 
         JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(classroom.getStudents());
 
-        reportFiller.setReportFileName("studentsReport");
 
-        reportFiller.setDataSource(dataSource);
 
-        reportFiller.prepareReport();
+        if (exportType == null || exportType.equals("pdf")) {
+            try {
+                reportFiller.setReportFileName("studentsReport");
 
-        reportExporter.setJasperPrint(reportFiller.getJasperPrint());
+                reportFiller.setDataSource(dataSource);
 
-        try {
-            response.setContentType("application/pdf");
-            reportExporter.exportToPdf("temp1", "Alexc", response.getOutputStream());
-        } catch (IOException e) {
-            e.printStackTrace();
+                reportFiller.prepareReport();
+
+                reportExporter.setJasperPrint(reportFiller.getJasperPrint());
+
+                response.setContentType("application/pdf");
+                reportExporter.exportToPdf("temp1", "Alexc", response.getOutputStream());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else if (exportType.equals("xlsx")) {
+            try {
+                reportFiller.setReportFileName("studentsExcelReport");
+
+                reportFiller.setDataSource(dataSource);
+
+                reportFiller.prepareReport();
+
+                reportExporter.setJasperPrint(reportFiller.getJasperPrint());
+
+                response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+                reportExporter.exportToXlsx("temp1", "Grades", response.getOutputStream());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
         }
+
+
 
     }
 
