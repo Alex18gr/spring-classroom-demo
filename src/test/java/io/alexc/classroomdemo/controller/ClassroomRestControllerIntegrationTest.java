@@ -1,6 +1,7 @@
 package io.alexc.classroomdemo.controller;
 
 import io.alexc.classroomdemo.entity.Classroom;
+import io.alexc.classroomdemo.mapper.ClassroomMapper;
 import io.alexc.classroomdemo.service.ClassroomService;
 import io.alexc.classroomdemo.service.StudentService;
 import org.junit.jupiter.api.DisplayName;
@@ -21,7 +22,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(ClassroomController.class)
+@WebMvcTest(ClassroomEntityController.class)
 public class ClassroomRestControllerIntegrationTest {
 
     @Autowired
@@ -45,7 +46,7 @@ public class ClassroomRestControllerIntegrationTest {
         allClassrooms.add(classroom2);
         allClassrooms.add(classroom3);
 
-        given(classroomService.findAllClassrooms()).willReturn(allClassrooms);
+        given(classroomService.findAllClassrooms()).willReturn(ClassroomMapper.getInstance().toDtoList(allClassrooms));
 
         mvc.perform(get("/classrooms/")
                 .contentType(MediaType.APPLICATION_JSON))

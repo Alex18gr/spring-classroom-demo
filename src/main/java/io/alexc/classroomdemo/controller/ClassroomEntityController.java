@@ -1,5 +1,6 @@
 package io.alexc.classroomdemo.controller;
 
+import io.alexc.classroomdemo.dto.ClassroomDto;
 import io.alexc.classroomdemo.entity.Classroom;
 import io.alexc.classroomdemo.entity.Student;
 import io.alexc.classroomdemo.error.ClassroomNotFoundException;
@@ -26,7 +27,7 @@ import java.util.List;
 @RequestMapping("classrooms")
 // For fixing the CORS issues due to different domain with the front-end
 @CrossOrigin(origins = {"http://localhost:4200", "http://localhost:4201"}, maxAge = 3600)
-public class ClassroomEntityController implements ClassroomController {
+public class ClassroomEntityController {
 
     private final ClassroomService classroomService;
 
@@ -44,7 +45,7 @@ public class ClassroomEntityController implements ClassroomController {
     }
 
     @RequestMapping(value = "", method = RequestMethod.GET)
-    public List<Classroom> getClassrooms() {
+    public List<ClassroomDto> getClassrooms() {
         return classroomService.findAllClassrooms();
     }
 

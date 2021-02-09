@@ -4,6 +4,8 @@ import io.alexc.classroomdemo.dto.ClassroomDto;
 import io.alexc.classroomdemo.dto.StudentDto;
 import io.alexc.classroomdemo.entity.Classroom;
 import io.alexc.classroomdemo.entity.Student;
+import org.aspectj.weaver.patterns.IScope;
+import org.springframework.stereotype.Component;
 
 import java.text.DateFormat;
 import java.text.ParseException;

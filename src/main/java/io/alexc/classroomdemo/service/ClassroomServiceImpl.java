@@ -1,6 +1,8 @@
 package io.alexc.classroomdemo.service;
 
+import io.alexc.classroomdemo.dto.ClassroomDto;
 import io.alexc.classroomdemo.entity.Classroom;
+import io.alexc.classroomdemo.mapper.ClassroomMapper;
 import io.alexc.classroomdemo.repository.ClassroomRepository;
 import org.springframework.stereotype.Service;
 
@@ -17,8 +19,8 @@ public class ClassroomServiceImpl implements ClassroomService {
     }
 
     @Override
-    public List<Classroom> findAllClassrooms() {
-        return this.classroomRepository.findAll();
+    public List<ClassroomDto> findAllClassrooms() {
+        return ClassroomMapper.getInstance().toDtoList(this.classroomRepository.findAll());
     }
 
     @Override
