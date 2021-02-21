@@ -1,21 +1,22 @@
 package io.alexc.classroomdemo.service;
 
 import io.alexc.classroomdemo.dto.ClassroomDto;
-import io.alexc.classroomdemo.entity.Classroom;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface ClassroomService {
 
-    public List<ClassroomDto> findAllClassrooms();
+    List<ClassroomDto> findAllClassrooms();
 
-    public Classroom saveClassroom(Classroom classroom);
+    ClassroomDto saveClassroom(ClassroomDto classroomDto);
 
-    public void deleteClassroom(Classroom classroom);
+    ClassroomDto updateClassroom(Integer id, ClassroomDto classroomDto);
 
-    public void deleteClassroomById(int id);
+    void deleteClassroom(ClassroomDto classroomDto);
 
-    public Optional<Classroom> findById(Integer id);
+    void deleteClassroomById(int id);
+
+    ClassroomDto getClassroom(Integer id);
 
 }

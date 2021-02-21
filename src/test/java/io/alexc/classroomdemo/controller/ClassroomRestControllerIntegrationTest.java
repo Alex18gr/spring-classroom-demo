@@ -2,6 +2,7 @@ package io.alexc.classroomdemo.controller;
 
 import io.alexc.classroomdemo.entity.Classroom;
 import io.alexc.classroomdemo.mapper.ClassroomMapper;
+import io.alexc.classroomdemo.service.ClassroomManageService;
 import io.alexc.classroomdemo.service.ClassroomService;
 import io.alexc.classroomdemo.service.StudentService;
 import org.junit.jupiter.api.DisplayName;
@@ -22,7 +23,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(ClassroomEntityController.class)
+@WebMvcTest(ClassroomController.class)
 public class ClassroomRestControllerIntegrationTest {
 
     @Autowired
@@ -30,6 +31,9 @@ public class ClassroomRestControllerIntegrationTest {
 
     @MockBean
     private ClassroomService classroomService;
+
+    @MockBean
+    private ClassroomManageService classroomManageService;
 
     @MockBean
     private StudentService studentService;
