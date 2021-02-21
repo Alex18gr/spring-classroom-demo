@@ -1,6 +1,8 @@
 package io.alexc.classroomdemo.service;
 
+import io.alexc.classroomdemo.dto.ClassroomDto;
 import io.alexc.classroomdemo.entity.Classroom;
+import io.alexc.classroomdemo.mapper.ClassroomMapper;
 import io.alexc.classroomdemo.repository.ClassroomRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,6 +20,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 public class ClassroomServiceImplIntegrationTest {
+
+    private ClassroomDto testClassroom;
 
     @TestConfiguration
     static class ClassroomServiceImplTestContextConfiguration {
@@ -45,6 +49,8 @@ public class ClassroomServiceImplIntegrationTest {
         classroom.setId(555);
         classroom.setStudents(new ArrayList<>());
 
+        testClassroom = ClassroomMapper.getInstance().toDto(classroom);
+
         Mockito.when(classroomRepository.findById(555))
                 .thenReturn(java.util.Optional.of(classroom));
     }
@@ -53,11 +59,12 @@ public class ClassroomServiceImplIntegrationTest {
     public void whenValidId_ClassroomShouldBeFound() {
         Integer id = 555;
 
-        Optional<Classroom> foundClassroom = classroomService.findById(555);
+        ClassroomDto foundClassroom = classroomService.getClassroom(555);
 
-        assertThat(foundClassroom.isPresent()).isEqualTo(true);
-
-        assertThat(foundClassroom.get().getName()).isEqualTo("test 1");
+        assertThat(foundClassroom).isNotNull();
+        assertThat(foundClassroom.getName()).isEqualTo("test 1");
+        assertThat(foundClassroom.getId()).isEqualTo(555);
+        assertThat(foundClassroom.getStudents()).isNotNull();
     }
 
 }

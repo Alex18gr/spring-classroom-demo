@@ -1,34 +1,84 @@
 package io.alexc.classroomdemo.controller;
 
-import io.alexc.classroomdemo.entity.Classroom;
-import io.alexc.classroomdemo.entity.Student;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
+import io.alexc.classroomdemo.dto.ClassroomDto;
+import io.alexc.classroomdemo.dto.StudentDto;
+import io.alexc.classroomdemo.service.ClassroomManageService;
+import io.alexc.classroomdemo.service.ClassroomService;
+import io.alexc.classroomdemo.service.StudentService;
+import org.springframework.web.bind.annotation.*;
 
-import java.awt.print.Pageable;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
-public interface ClassroomController {
+@RestController
+@RequestMapping("classrooms")
+// For fixing the CORS issues due to different domain with the front-end
+@CrossOrigin(origins = {"http://localhost:4200", "http://localhost:4201"}, maxAge = 3600)
+public class ClassroomController {
 
-    public List<Classroom> getClassrooms();
+    private final ClassroomService classroomService;
 
-    public Classroom postClassroom(@RequestBody Classroom classroom);
+    private final StudentService studentService;
 
-    public Classroom getClassroom(@PathVariable Integer id);
+    private final ClassroomManageService classroomManageService;
 
-    public Classroom putClassroom(@RequestBody Classroom classroom, @PathVariable Integer id);
+    public ClassroomController(ClassroomService classroomService, StudentService studentService, ClassroomManageService classroomManageService) {
+        this.classroomService = classroomService;
+        this.studentService = studentService;
+        this.classroomManageService = classroomManageService;
+    }
 
-    public void deleteClassroom(@PathVariable Integer id);
+    @RequestMapping(value = "", method = RequestMethod.GET)
+    public List<ClassroomDto> getClassrooms() {
+        return classroomService.findAllClassrooms();
+    }
 
-    public Collection<Student> getClassroomStudents(@PathVariable Integer classroomId);
+    @RequestMapping(value = "", method = RequestMethod.POST)
+    public ClassroomDto createClassroom(@RequestBody ClassroomDto classroomDto) {
+        return this.classroomService.saveClassroom(classroomDto);
+    }
 
-    public Student postClassroomStudent(@PathVariable Integer classroomId, @RequestBody Student student);
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public ClassroomDto getClassroom(@PathVariable Integer id) {
+        return this.classroomService.getClassroom(id);
+    }
 
-    public Student getClassroomStudentById(@PathVariable Integer classroomId, @PathVariable Integer studentId);
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    public ClassroomDto updateClassroom(@RequestBody ClassroomDto classroomDto, @PathVariable Integer id) {
+        return this.classroomService.updateClassroom(id, classroomDto);
+    }
 
-    public Student putClassroomStudent(@PathVariable Integer classroomId, @PathVariable Integer studentId, @RequestBody Student student);
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    public void deleteClassroom(@PathVariable Integer id) {
+        this.classroomService.deleteClassroomById(id);
+    }
 
-    public void deleteClassroomStudent(@PathVariable Integer classroomId, @PathVariable Integer studentId);
+    @RequestMapping(value = "/{classroomId}/students", method = RequestMethod.GET)
+    public Collection<StudentDto> getClassroomStudents(@PathVariable Integer classroomId) {
+        return this.classroomManageService.getClassroomStudents(classroomId);
+    }
+
+    @RequestMapping(value = "/{classroomId}/students", method = RequestMethod.POST)
+    public StudentDto saveClassroomStudent(@PathVariable Integer classroomId, @RequestBody StudentDto studentDto) {
+        return this.classroomManageService.saveClassroomStudent(classroomId, studentDto);
+    }
+
+    @RequestMapping(value = "/{classroomId}/students/{studentId}", method = RequestMethod.GET)
+    public StudentDto getClassroomStudent(@PathVariable Integer classroomId, @PathVariable Integer studentId) {
+        return this.classroomManageService.getClassroomStudent(classroomId, studentId);
+    }
+
+    @RequestMapping(value = "/{classroomId}/students/{studentId}", method = RequestMethod.PUT)
+    public StudentDto updateClassroomStudent(@PathVariable Integer classroomId, @PathVariable Integer studentId, @RequestBody StudentDto studentDto) {
+        return this.classroomManageService.updateClassroomStudent(classroomId, studentId, studentDto);
+    }
+
+    @RequestMapping(value = "/{classroomId}/students/{studentId}", method = RequestMethod.DELETE)
+    public void deleteClassroomStudent(@PathVariable Integer classroomId, @PathVariable Integer studentId) {
+        this.classroomManageService.deleteClassroomStudent(classroomId, studentId);
+    }
+
+
 
 }

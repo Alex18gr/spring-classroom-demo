@@ -1,6 +1,8 @@
 package io.alexc.classroomdemo.controller;
 
 import io.alexc.classroomdemo.entity.Classroom;
+import io.alexc.classroomdemo.mapper.ClassroomMapper;
+import io.alexc.classroomdemo.service.ClassroomManageService;
 import io.alexc.classroomdemo.service.ClassroomService;
 import io.alexc.classroomdemo.service.StudentService;
 import org.junit.jupiter.api.DisplayName;
@@ -31,6 +33,9 @@ public class ClassroomRestControllerIntegrationTest {
     private ClassroomService classroomService;
 
     @MockBean
+    private ClassroomManageService classroomManageService;
+
+    @MockBean
     private StudentService studentService;
 
     @Test
@@ -45,7 +50,7 @@ public class ClassroomRestControllerIntegrationTest {
         allClassrooms.add(classroom2);
         allClassrooms.add(classroom3);
 
-        given(classroomService.findAllClassrooms()).willReturn(allClassrooms);
+        given(classroomService.findAllClassrooms()).willReturn(ClassroomMapper.getInstance().toDtoList(allClassrooms));
 
         mvc.perform(get("/classrooms/")
                 .contentType(MediaType.APPLICATION_JSON))
